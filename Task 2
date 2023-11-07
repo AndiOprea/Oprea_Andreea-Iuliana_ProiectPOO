@@ -15,7 +15,7 @@ private:
 	string* numePersonaje;
 
 public:
-	static int getNrVolme() 
+	static int getNrVolme()
 	{
 		return nrVolume;
 	}
@@ -28,7 +28,7 @@ public:
 		this->numePersonaje = NULL;
 	}
 
-	Carte(string titlu, float pret):editie(nrVolume)
+	Carte(string titlu, float pret) :editie(nrVolume)
 	{
 		nrVolume++;
 		this->titlu = titlu;
@@ -38,14 +38,14 @@ public:
 		this->numePersonaje = NULL;
 	}
 
-	Carte(string titlu, float pret, bool bestseller, int nrPersonaje, string* numePersonaje): editie(nrVolume)
+	Carte(string titlu, float pret, bool bestseller, int nrPersonaje, string* numePersonaje) : editie(nrVolume)
 	{
 		nrVolume++;
 		this->titlu = titlu;
 		this->pret = pret;
 		this->bestseller = bestseller;
 		this->nrPersonaje = nrPersonaje;
-		this->numePersonaje = new string [nrPersonaje];
+		this->numePersonaje = new string[nrPersonaje];
 		for (int i = 0; i < nrPersonaje; i++)
 		{
 			this->numePersonaje[i] = numePersonaje[i];
@@ -65,13 +65,80 @@ public:
 		}
 	}
 
+	Carte operator=(const Carte& carte1)
+	{
+		if(this!=&carte1)
+		this->titlu = carte1.titlu;
+		this->pret = carte1.pret;
+		this->bestseller = carte1.bestseller;
+		this->nrPersonaje = carte1.nrPersonaje;
+		if (this->numePersonaje != NULL)
+		{
+			delete[]this->numePersonaje;
+		}
+		this->numePersonaje=new string[carte1.nrPersonaje];
+		for (int i = 0; i < carte1.nrPersonaje; i++)
+		{
+			this->numePersonaje[i] = carte1.numePersonaje[i];
+		}
+		return *this;
+	}
+
+	Carte operator+(Carte c)
+	{
+		Carte aux = *this;
+		aux.titlu = this->titlu+c.titlu;
+		aux.pret = this->pret+c.pret;
+		aux.bestseller = this->bestseller+c.bestseller;
+		aux.nrPersonaje = this->nrPersonaje+c.nrPersonaje;
+		if (aux.numePersonaje != NULL)
+		{
+			delete[]aux.numePersonaje;
+		}
+		aux.numePersonaje = new string[aux.nrPersonaje];
+		for (int i = 0; i < this->nrPersonaje; i++)
+		{
+			aux.numePersonaje[i] = this->numePersonaje[i];
+		}
+		for (int i = this->nrPersonaje; i < nrPersonaje; i++)
+		{
+			aux.numePersonaje[i] = c.numePersonaje[i - this->nrPersonaje];
+		}
+		return aux;
+	}
+
+	friend ostream& operator<<(ostream& afis, const Carte& c);
+
+	friend istream& operator>>(istream& intr, Carte& c)
+	{
+		cout << "Titlu: ";
+		intr >> c.titlu;
+		cout << "Pret: ";
+		intr >> c.pret;
+		cout << "Bestseller: ";
+		intr >> c.bestseller;
+		cout << "Numar de personaje: ";
+		intr >> c.nrPersonaje;
+		if (c.numePersonaje != NULL)
+		{
+			delete[]c.numePersonaje;
+		}
+		cout << "Personajele sunt: ";
+		c.numePersonaje = new string[c.nrPersonaje];
+		for (int i = 0; i < c.nrPersonaje; i++)
+		{
+			intr >> c.numePersonaje[i];
+			cout << c.numePersonaje[i];
+		}
+		return intr;
+	}
 
 	int getEditie()
 	{
 		return editie;
 	}
 
-	string getTitlu() 
+	string getTitlu()
 	{
 		return titlu;
 	}
@@ -149,7 +216,7 @@ public:
 		}
 	}
 
-	void afisareCarte() 
+	void afisareCarte()
 	{
 		cout << "Cartea " << titlu << " are prettul de " << pret << " lei ";
 		if (bestseller == true)cout << " si a catigat titlul de bestseller, avand un numar de " << nrPersonaje << " personaj/e: ";
@@ -172,15 +239,15 @@ public:
 		{
 			aux[i] = this->numePersonaje[i];
 		}
-			aux[this->nrPersonaje] = numePersonaje;
-			this->nrPersonaje++;
-			if (this->numePersonaje)
-			{
-				delete[]this->numePersonaje;
-			}
-			this->numePersonaje = aux;
+		aux[this->nrPersonaje] = numePersonaje;
+		this->nrPersonaje++;
+		if (this->numePersonaje)
+		{
+			delete[]this->numePersonaje;
+		}
+		this->numePersonaje = aux;
 	}
-	
+
 	friend string getSirPersonaje(const Carte& c);
 	friend int getNrPersonaje(const Carte& c);
 };
@@ -202,6 +269,24 @@ int getNrPersonaje(const Carte& c)
 	return c.nrPersonaje;
 }
 
+ostream& operator<<(ostream& afis, const Carte& c)
+{
+	afis << "Cartea " << c.titlu << " are prettul de " << c.pret << " lei si " << c.nrPersonaje << " personaje, precum: ";
+	if (c.nrPersonaje > 0)
+	{
+		for (int i = 0; i < c.nrPersonaje; i++)
+		{
+			afis << c.numePersonaje[i] << " ";
+		}
+	}
+	else afis << "NA";
+	afis << endl;
+	return afis;
+	
+}
+
+
+
 class Album {
 private:
 	static int nrAlbum;
@@ -211,14 +296,14 @@ private:
 	int nrPiese;
 	string* titluPiese;
 public:
-	static int getnrAlbum() 
+	static int getnrAlbum()
 	{
 		return nrAlbum;
 	}
 
 	Album() :anAlbum(nrAlbum++)
 	{
-		this-> numeAlbum = "Midnights";
+		this->numeAlbum = "Midnights";
 		this->artist = "Taylor Swift";
 		this->nrPiese = 0;
 		this->titluPiese = NULL;
@@ -233,15 +318,15 @@ public:
 		this->titluPiese = NULL;
 	}
 
-	Album(string numeAlbum, string artist,int nrPiese, string* titluPiese) : anAlbum(nrAlbum)
+	Album(string numeAlbum, string artist, int nrPiese, string* titluPiese) : anAlbum(nrAlbum)
 	{
 		nrAlbum++;
 		this->numeAlbum = numeAlbum;
 		this->artist = artist;
 		this->nrPiese = nrPiese;
-		this->titluPiese = new string [nrPiese];
-		for(int i=0;i<nrPiese;i++)
-		{ 
+		this->titluPiese = new string[nrPiese];
+		for (int i = 0; i < nrPiese; i++)
+		{
 			this->titluPiese[i] = titluPiese[i];
 		}
 	}
@@ -258,6 +343,55 @@ public:
 		}
 	}
 
+	Album operator=(const Album& album1)
+	{
+		if (this != &album1)
+		this->numeAlbum = album1.numeAlbum;
+	this->artist = album1.artist;
+	this->nrPiese = album1.nrPiese;
+	if (this->titluPiese != NULL)
+	{
+		delete[]this->titluPiese;
+	}
+	this->titluPiese = new string[album1.nrPiese];
+	for (int i = 0; i < album1.nrPiese; i++)
+	{
+		this->titluPiese[i] = album1.titluPiese[i];
+	}
+	return *this;
+	}
+
+	Album operator+=(const Album& a)
+	{
+		int auxNrPiese = this->nrPiese + a.nrPiese;
+		string* auxTitluPiese = new string[auxNrPiese];
+		for (int i = 0; i < this->nrPiese; i++)
+		{
+			auxTitluPiese[i] = this->numeAlbum[i];
+		}
+		for (int i = this->nrPiese; i < auxNrPiese; i++)
+		{
+			auxTitluPiese[i] = a.titluPiese[i - this->nrPiese];
+		}
+		this->nrPiese = auxNrPiese;
+		if (this->titluPiese != NULL)
+		{
+			delete[]this->titluPiese;
+		}
+		this->titluPiese = auxTitluPiese;
+		return *this;
+	}
+
+	bool operator!=(Album& a)
+	{
+		return this->nrPiese != a.nrPiese;
+	}
+
+	bool operator<(Album& a)
+	{
+		return this->nrPiese < a.nrPiese;
+	}
+
 	int getAnAlbum()
 	{
 		return anAlbum;
@@ -272,7 +406,7 @@ public:
 	{
 		return artist;
 	}
-	
+
 	int getNrPiese()
 	{
 		return nrPiese;
@@ -379,7 +513,10 @@ int getNrPiese1(const Album& a)
 }
 
 
-class Tablou{
+
+
+
+class Tablou {
 private:
 	static int nrTablou;
 	const int serie;
@@ -423,6 +560,54 @@ public:
 		}
 	}
 
+	Tablou(const Tablou& tablou3) :serie(nrTablou++)
+	{
+		this->denumire = tablou3.denumire;
+		this->pictor = tablou3.pictor;
+		this->nrLucrari = tablou3.nrLucrari;
+		this->numeLucrari = new string[tablou3.nrLucrari];
+		for (int i = 0; i < tablou3.nrLucrari; i++)
+		{
+			this->numeLucrari[i] = tablou3.numeLucrari[i];
+		}
+	}
+
+	Tablou operator=(Tablou& tablou3)
+	{
+		if(this!=NULL)
+		this->denumire = tablou3.denumire;
+		this->pictor = tablou3.pictor;
+		this->nrLucrari = tablou3.nrLucrari;
+		if (this->numeLucrari != NULL)
+		{
+			delete[]this->numeLucrari;
+		}
+			this->numeLucrari = new string[tablou3.nrLucrari];
+		for (int i = 0; i < tablou3.nrLucrari; i++)
+		{
+			this->numeLucrari[i] = tablou3.numeLucrari[i];
+		}
+		return *this;
+	}
+
+	bool operator>(Tablou t)
+	{
+		return this->nrLucrari > t.nrLucrari;
+	}
+	
+	bool operator<=(Tablou t)
+	{
+		return this->nrLucrari <= t.nrLucrari;
+	}
+
+	string operator[](int i)
+	{
+		if (i >= 0 && i < nrLucrari)
+		{
+			return numeLucrari[i];
+		}
+	}
+
 	int getSerie()
 	{
 		return serie;
@@ -451,13 +636,13 @@ public:
 	void setDenumire(string denumire)
 	{
 		if (denumire.length() > 3)
-			this->denumire= denumire;
+			this->denumire = denumire;
 	}
 
 	void setPictor(string pictor)
 	{
 		if (pictor.length() > 3)
-			this->pictor= pictor;
+			this->pictor = pictor;
 	}
 
 	void setNrLucrari(int nrLucrari)
@@ -480,18 +665,6 @@ public:
 			{
 				this->numeLucrari[i] = numeLucrari[i];
 			}
-		}
-	}
-
-	Tablou(const Tablou& tablou3) :serie(nrTablou++)
-	{
-		this->denumire = tablou3.denumire;
-		this->pictor = tablou3.pictor;
-		this->nrLucrari = tablou3.nrLucrari;
-		this->numeLucrari = new string[tablou3.nrLucrari];
-		for (int i = 0; i < tablou3.nrLucrari; i++)
-		{
-			this->numeLucrari[i] = tablou3.numeLucrari[i];
 		}
 	}
 
@@ -557,6 +730,8 @@ int getNrLucrari1(const Tablou& t)
 
 void main()
 {
+	//task01
+
 	Carte carte1;
 	carte1.adaugarePersonaj("Aelin Ashryver.");
 	carte1.afisareCarte();
@@ -571,7 +746,9 @@ void main()
 	numePersonaje[2] = "Andie Bell. ";
 	Carte carte3("A Good Girl's Guide to Murder", 57.6, false, 3, numePersonaje);
 	carte3.afisareCarte();
-	
+
+	//task02
+
 	Carte carte4 = carte1;
 	carte4.afisareCarte();
 
@@ -603,7 +780,19 @@ void main()
 	cout << getSirPersonaje(carte1) << endl;
 	cout << getNrPersonaje(carte2) << endl;
 
+	//task03
 
+	Carte carte5;
+	carte5 = carte4;
+
+	//carte5 = carte1 + carte2;
+
+	//cout << carte2;
+
+	//cin >> carte1;
+
+
+	//task01
 
 	Album album1;
 	album1.adaugarePiese("Karma");
@@ -619,6 +808,8 @@ void main()
 	Album album3("Mercury", "Imagine Dragons", 2, titluPiese);
 	album3.adaugarePiese("Sharks");
 	album3.afisareAlbum();
+
+	//task02
 
 	Album album4 = album2;
 	album4.afisareAlbum();
@@ -648,13 +839,18 @@ void main()
 
 	cout << getNrPiese1(album2) << endl;
 
+	//task03
+	Album album5;
+	album5 = album3;
 
+
+	//task01
 
 	Tablou tablou1;
 	tablou1.adaugareLucrare("Dimineata");
 	tablou1.afisareTablou();
 
-	Tablou tablou2("Viziune","Sebastian Stan");
+	Tablou tablou2("Viziune", "Sebastian Stan");
 	tablou2.adaugareLucrare("Intuneric");
 	tablou2.afisareTablou();
 
@@ -665,13 +861,15 @@ void main()
 	tablou3.adaugareLucrare("Trecut");
 	tablou3.afisareTablou();
 
+	//task02
+
 	Tablou tablou4 = tablou3;
 	tablou4.afisareTablou();
 
 	cout << Tablou::getnrTablou() << endl;
 
 	cout << tablou1.getSerie() << endl;
-	
+
 	cout << tablou1.getDenumire() << endl;
 	tablou1.setDenumire("Apus de Soare");
 	cout << tablou1.getDenumire() << endl;
@@ -692,4 +890,9 @@ void main()
 	cout << getSirNumeLucrari(tablou1) << endl;
 
 	cout << getNrLucrari1(tablou2) << endl;
+
+	//task03
+
+	Tablou tablou5;
+	tablou5 = tablou2;
 }
