@@ -548,7 +548,7 @@ public:
 
 	friend ofstream& operator<<(ofstream& monitor, const Album& a)
 	{
-		monitor << a.numeAlbum << " ";
+		monitor << a.numeAlbum << endl;
 		monitor << a.artist << endl;
 		monitor << a.nrPiese << endl;
 		for (int i = 0; i < a.nrPiese; i++)
@@ -1263,46 +1263,90 @@ int getNrLucrari1(const Tablou& t)
 
 void main()
 {
-	Carte c1;
-	cin >> c1;
-	string* numePersonaje = new string[3];
-	numePersonaje[0] = " ";
-	numePersonaje[1] = " ";
-	numePersonaje[2] = " ";
-	Carte c2("The_Maze_Runner", 58.9, 1, 3, numePersonaje);
-	ofstream afisare("carte.txt", ios::out);
-	afisare << c2;
-	afisare.close();
+	//Carte c1;
+	//cin >> c1;
+	//string* numePersonaje = new string[3];
+	//numePersonaje[0] = " Thersa ";
+	//numePersonaje[1] = " Thomas ";
+	//numePersonaje[2] = " Newt ";
+	//Carte c2("The_Maze_Runner", 58.9, 1, 3, numePersonaje);
+	//ofstream afisare("carte.txt", ios::out);
+	//afisare << c2;
+	//afisare.close();
 
-	ifstream citire("carte.txt", ios::in);
-	citire >> c2;
-	cout << c2;
-	citire.close();
+	//ifstream citire("carte.txt", ios::in);
+	//citire >> c2;
+	//cout << c2;
+	//citire.close();
 
-	char sir[100] = "text salvat in fisier binar";
+	//char sir[100] = "text salvat in fisier binar";
 
-	float pret = 50.7;
-	fstream f("carte.bin", ios::out | ios::binary);
+	//float pret = 50.7;
+	//fstream f("carte.bin", ios::out | ios::binary);
 
-	f.write((char*)&pret, sizeof(float));
-	int lungime = strlen(sir) + 1;
-	f.write((char*)&lungime, sizeof(int));
-	f.write((char*)sir, lungime);
+	//f.write((char*)&pret, sizeof(float));
+	//int lungime = strlen(sir) + 1;
+	//f.write((char*)&lungime, sizeof(int));
+	//f.write((char*)sir, lungime);
+	//f.close();
+
+	//fstream g("carte.bin", ios::binary | ios::in);
+
+	//float pretCitit;
+	//char* pSir;
+	//int lungimeCitita;
+
+	//g.read((char*)&pretCitit, sizeof(float));
+
+	//g.read((char*)&pretCitit, sizeof(float));
+	//g.read((char*)&lungimeCitita, sizeof(int));
+	//pSir = new char[lungimeCitita];
+	//g.read((char*)pSir, lungimeCitita);
+	//g.close();
+	//cout << pretCitit << " " << pSir;
+	//delete[]pSir;
+
+
+
+	Album a1;
+	cin >> a1;
+	string* titluPiese = new string[2];
+	titluPiese[0] = "Daylight";
+	titluPiese[1] = "Kids";
+	Album a2("Power", "Isak", 2, titluPiese);
+	ofstream afisare1("album.txt", ios::out);
+	afisare1 << a2;
+	afisare1.close();
+
+	ifstream citire1("album.txt", ios::in);
+	citire1 >> a2;
+	cout << a2;
+	citire1.close();
+
+	char sir1[100] = "text salvat in fisier binar";
+
+	float pret1 = 70.8;
+	fstream f("album.bin", ios::out | ios::binary);
+
+	f.write((char*)&pret1, sizeof(float));
+	int lungime1 = strlen(sir1) + 1;
+	f.write((char*)&lungime1, sizeof(int));
+	f.write((char*)sir1, lungime1);
 	f.close();
 
-	fstream g("carte.bin", ios::binary | ios::in);
+	fstream g("album.bin", ios::binary | ios::in);
 
-	float pretCitit;
-	char* pSir;
-	int lungimeCitita;
+	float pretCitit1;
+	char* pSir1;
+	int lungimeCitita1;
 
-	g.read((char*)&pretCitit, sizeof(float));
+	g.read((char*)&pretCitit1, sizeof(float));
 
-	g.read((char*)&pretCitit, sizeof(float));
-	g.read((char*)&lungimeCitita, sizeof(int));
-	pSir = new char[lungimeCitita];
-	g.read((char*)pSir, lungimeCitita);
+	g.read((char*)&pretCitit1, sizeof(float));
+	g.read((char*)&lungimeCitita1, sizeof(int));
+	pSir1 = new char[lungimeCitita1];
+	g.read((char*)pSir1, lungimeCitita1);
 	g.close();
-	cout << pretCitit << " " << pSir;
-	delete[]pSir;
-}
+	cout << pretCitit1 << " " << pSir1;
+	delete[]pSir1;
+} 
