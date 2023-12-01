@@ -282,7 +282,102 @@ int getNrPersonaje(const Carte& c)
 	return c.nrPersonaje;
 }
 
+class Autor
+{
+private:
+	string numeAutor;
+	int varsta;
+	Carte carte;
+public:
 
+	Autor()
+	{
+		this->numeAutor = "Sarah J. Mass";
+		this->varsta = 40;
+	}
+
+	Autor(string numeAutor, int varsta, Carte& carte)
+	{
+		this->numeAutor = numeAutor;
+		this->varsta = varsta;
+		this->carte = carte;
+	}
+
+	Autor(Carte& carte)
+	{
+		this->numeAutor = "Sarah J. Mass";
+		this->varsta = 40;
+		this->carte = carte;
+	}
+
+	string getNumeAutor()
+	{
+		return numeAutor;
+	}
+
+	void setNumeAutor(string numeAutor)
+	{
+		this->numeAutor = numeAutor;
+	}
+
+	int getVarsta()
+	{
+		return varsta;
+	}
+
+	void setVarsta(int varsta)
+	{
+		if (this->varsta > 0)
+		{
+			this->varsta = varsta;
+		}
+	}
+
+	int getCarteAutor()
+	{
+		cout << "Cartea " << carte.getTitlu() << " a fost scrisa de " << numeAutor << " ,in varsta de ";
+		return varsta;
+	}
+
+	void setCarteAutor(Carte& carte)
+	{
+		this->carte = carte;
+	}
+
+	Autor operator=(const Autor& a)
+	{
+		this->numeAutor = a.numeAutor;
+		this->varsta = a.varsta;
+		this->carte = a.carte;
+		return *this;
+	}
+
+	friend ostream& operator<<(ostream& afis, const Autor& a) 
+	{
+		afis << "Numele autorului: " << a.numeAutor << endl;
+		afis << "Varsta autorului: " << a.varsta << endl;
+		afis << "Informatii despre cartea autorului: " << a.carte;
+		return afis;
+	}
+
+	friend istream& operator>>(istream& cit, Autor& a) 
+	{
+		cout << "Numele autorului: ";
+		cit >> a.numeAutor;
+		cout << "Varsta autorului: ";
+		cit >> a.varsta;
+		cout << "Cartea autorului: ";
+		cit >> a.carte;
+		return cit;
+	}
+
+
+	void afisareAutor()
+	{
+		cout << "Numele autorului este: " << numeAutor << " ,in varsta de " << varsta << " de ani." << endl;
+		carte.afisareCarte();
+	}
+};
 
 class Album {
 private:
@@ -872,12 +967,14 @@ void main()
 	const int numar_obiecteC = 2;
 	std::vector<Carte> vectorCarte(numar_obiecteC);
 
-	for (int i = 0; i < numar_obiecteC; ++i) {
+	for (int i = 0; i < numar_obiecteC; ++i) 
+	{
 		cout << "Introduceti datele pentru obiectul Carte la pozitia " << i << ":\n";
 		cin >> vectorCarte[i];
 	}
 	cout << endl << endl;
-	for (int i = 0; i < numar_obiecteC; ++i) {
+	for (int i = 0; i < numar_obiecteC; ++i) 
+	{
 		cout << "Afisare obiect Carte la pozitia " << i << ":\n";
 		cout << vectorCarte[i];
 	}
@@ -887,16 +984,20 @@ void main()
 
 	Carte matriceCarte[numar_linii][numar_coloane];
 
-	for (int i = 0; i < numar_linii; ++i) {
-		for (int j = 0; j < numar_coloane; ++j) {
+	for (int i = 0; i < numar_linii; ++i) 
+	{
+		for (int j = 0; j < numar_coloane; ++j) 
+		{
 			cout << "Introduceti datele pentru obiectul Carte la pozitia [" << i << "][" << j << "]:\n";
 			cin >> matriceCarte[i][j];
 			cout << endl;
 		}
 	}
 
-	for (int i = 0; i < numar_linii; ++i) {
-		for (int j = 0; j < numar_coloane; ++j) {
+	for (int i = 0; i < numar_linii; ++i) 
+	{
+		for (int j = 0; j < numar_coloane; ++j) 
+		{
 			cout << "Afisare obiect Carte la pozitia [" << i << "][" << j << "]:\n";
 			cout << matriceCarte[i][j];
 		}
@@ -960,12 +1061,14 @@ void main()
 	const int numar_obiecteA = 2;
 	std::vector<Album> vectorAlbum(numar_obiecteC);
 
-	for (int i = 0; i < numar_obiecteA; ++i) {
+	for (int i = 0; i < numar_obiecteA; ++i) 
+	{
 		cout << "Introduceti datele pentru obiectul Album la pozitia " << i << ":\n";
 		cin >> vectorAlbum[i];
 	}
 	cout << endl << endl;
-	for (int i = 0; i < numar_obiecteA; ++i) {
+	for (int i = 0; i < numar_obiecteA; ++i)
+	{
 		cout << "Afisare obiect Album la pozitia " << i << ":\n";
 		cout << vectorAlbum[i];
 	}
@@ -975,16 +1078,20 @@ void main()
 
 	Album matriceAlbum[numar_linii1][numar_coloane1];
 
-	for (int i = 0; i < numar_linii1; ++i) {
-		for (int j = 0; j < numar_coloane1; ++j) {
+	for (int i = 0; i < numar_linii1; ++i) 
+	{
+		for (int j = 0; j < numar_coloane1; ++j) 
+		{
 			cout << "Introduceti datele pentru obiectul Album la pozitia [" << i << "][" << j << "]:\n";
 			cin >> matriceAlbum[i][j];
 			cout << endl;
 		}
 	}
 
-	for (int i = 0; i < numar_linii1; ++i) {
-		for (int j = 0; j < numar_coloane1; ++j) {
+	for (int i = 0; i < numar_linii1; ++i) 
+	{
+		for (int j = 0; j < numar_coloane1; ++j) 
+		{
 			cout << "Afisare obiect Album la pozitia [" << i << "][" << j << "]:\n";
 			cout << matriceAlbum[i][j];
 		}
@@ -1050,12 +1157,14 @@ void main()
 	const int numar_obiecteT = 2;
 	std::vector <Tablou> vectorTablou(numar_obiecteC);
 
-	for (int i = 0; i < numar_obiecteT; ++i) {
+	for (int i = 0; i < numar_obiecteT; ++i) 
+	{
 		cout << "Introduceti datele pentru obiectul Tablou la pozitia " << i << ":\n";
 		cin >> vectorTablou[i];
 	}
 	cout << endl << endl;
-	for (int i = 0; i < numar_obiecteT; ++i) {
+	for (int i = 0; i < numar_obiecteT; ++i) 
+	{
 		cout << "Afisare obiect Tablou la pozitia " << i << ":\n";
 		cout << vectorTablou[i];
 	}
@@ -1065,16 +1174,20 @@ void main()
 
 	Tablou matriceTablou[numar_linii2][numar_coloane2];
 
-	for (int i = 0; i < numar_linii2; ++i) {
-		for (int j = 0; j < numar_coloane2; ++j) {
+	for (int i = 0; i < numar_linii2; ++i) 
+	{
+		for (int j = 0; j < numar_coloane2; ++j) 
+		{
 			cout << "Introduceti datele pentru obiectul Tablou la pozitia [" << i << "][" << j << "]:\n";
 			cin >> matriceTablou[i][j];
 			cout << endl;
 		}
 	}
 
-	for (int i = 0; i < numar_linii2; ++i) {
-		for (int j = 0; j < numar_coloane2; ++j) {
+	for (int i = 0; i < numar_linii2; ++i) 
+	{
+		for (int j = 0; j < numar_coloane2; ++j) 
+		{
 			cout << "Afisare obiect Tablou la pozitia [" << i << "][" << j << "]:\n";
 			cout << matriceTablou[i][j];
 		}
