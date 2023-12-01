@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-
+#include <fstream>
 using namespace std;
 
 
@@ -110,9 +110,9 @@ public:
 
 	friend ostream& operator<<(ostream& monitor, const Carte& c)
 	{
-		monitor << "Titlu: " << c.titlu << " ";
+		monitor << "Titlu: " << c.titlu << endl;;
 		monitor << "Pret: " << c.pret << endl;
-		monitor << "Nr personaje" << c.nrPersonaje << endl;
+		monitor << "Nr personaje: " << c.nrPersonaje << endl;
 		monitor << "Personajele sunt: ";
 		for (int i = 0; i < c.nrPersonaje; i++)
 		{
@@ -138,6 +138,41 @@ public:
 			delete[]c.numePersonaje;
 		}
 		cout << "Personajele sunt: ";
+		c.numePersonaje = new string[c.nrPersonaje];
+		for (int i = 0; i < c.nrPersonaje; i++)
+		{
+			intr >> c.numePersonaje[i];
+		}
+		return intr;
+	}
+
+	friend ofstream& operator<<(ofstream& monitor, const Carte& c)
+	{
+		monitor << c.titlu << endl;
+		monitor << c.pret << endl;
+		monitor << c.nrPersonaje << endl;
+		if (c.nrPersonaje > 0)
+		{
+			for (int i = 0; i < c.nrPersonaje; i++)
+			{
+				monitor << c.numePersonaje[i] << ", ";
+			}
+		}
+		monitor << endl;
+		monitor << c.bestseller;
+		return monitor;
+	}
+
+	friend ifstream& operator>>(ifstream& intr, Carte& c)
+	{
+		intr >> c.titlu;
+		intr >> c.pret;
+		intr >> c.bestseller;
+		intr >> c.nrPersonaje;
+		if (c.numePersonaje != NULL)
+		{
+			delete[]c.numePersonaje;
+		}
 		c.numePersonaje = new string[c.nrPersonaje];
 		for (int i = 0; i < c.nrPersonaje; i++)
 		{
@@ -352,7 +387,7 @@ public:
 		return *this;
 	}
 
-	friend ostream& operator<<(ostream& afis, const Autor& a) 
+	friend ostream& operator<<(ostream& afis, const Autor& a)
 	{
 		afis << "Numele autorului: " << a.numeAutor << endl;
 		afis << "Varsta autorului: " << a.varsta << endl;
@@ -360,7 +395,7 @@ public:
 		return afis;
 	}
 
-	friend istream& operator>>(istream& cit, Autor& a) 
+	friend istream& operator>>(istream& cit, Autor& a)
 	{
 		cout << "Numele autorului: ";
 		cit >> a.numeAutor;
@@ -378,6 +413,8 @@ public:
 		carte.afisareCarte();
 	}
 };
+
+
 
 class Album {
 private:
@@ -501,6 +538,36 @@ public:
 			delete[]a.titluPiese;
 		}
 		cout << "Piesele sunt: ";
+		a.titluPiese = new string[a.nrPiese];
+		for (int i = 0; i < a.nrPiese; i++)
+		{
+			intr >> a.titluPiese[i];
+		}
+		return intr;
+	}
+
+	friend ofstream& operator<<(ofstream& monitor, const Album& a)
+	{
+		monitor << a.numeAlbum << " ";
+		monitor << a.artist << endl;
+		monitor << a.nrPiese << endl;
+		for (int i = 0; i < a.nrPiese; i++)
+		{
+			monitor << a.titluPiese[i] << ", ";
+		}
+		monitor << endl;
+		return monitor;
+	}
+
+	friend ifstream& operator>>(ifstream& intr, Album& a)
+	{
+		intr >> a.numeAlbum;
+		intr >> a.artist;
+		intr >> a.nrPiese;
+		if (a.titluPiese != NULL)
+		{
+			delete[]a.titluPiese;
+		}
 		a.titluPiese = new string[a.nrPiese];
 		for (int i = 0; i < a.nrPiese; i++)
 		{
@@ -891,305 +958,351 @@ int getNrLucrari1(const Tablou& t)
 }
 
 
+//void main()
+//{
+//	//task01
+//
+//	Carte carte1;
+//	carte1.adaugarePersonaj("Aelin Ashryver.");
+//	carte1.afisareCarte();
+//
+//	Carte carte2("Red Rising", 60);
+//	carte2.adaugarePersonaj("Darrow O'Lykos.");
+//	carte2.afisareCarte();
+//
+//	string* numePersonaje = new string[3];
+//	numePersonaje[0] = "Pippa Fitz-Amobi, ";
+//	numePersonaje[1] = "Ravi Singh, ";
+//	numePersonaje[2] = "Andie Bell. ";
+//	Carte carte3("A Good Girl's Guide to Murder", 57.6, false, 3, numePersonaje);
+//	carte3.afisareCarte();
+//
+//	//task02
+//
+//	Carte carte4 = carte1;
+//	carte4.afisareCarte();
+//
+//	cout << carte1.getNrVolme() << endl;
+//
+//	cout << carte1.getEditie() << endl;
+//
+//	cout << carte3.getTitlu() << endl;
+//	carte3.setTitlu("Hunger Games");
+//	cout << carte3.getTitlu() << endl;
+//
+//	cout << carte2.getPret() << endl;
+//	carte2.setPret(34.5);
+//	cout << carte2.getPret() << endl;
+//
+//	cout << carte1.getBestseller() << endl;
+//	carte1.setBestseller(false);
+//	cout << carte1.getBestseller() << endl;
+//
+//	cout << carte2.getnrPersonaje() << endl;
+//	//carte2.setNrPersonaje(3);
+//	cout << carte2.getnrPersonaje() << endl;
+//
+//	cout << carte3.getNumePersonaje()[1] << endl;
+//	string* vector = new string[2]{ "Rowan Whitethorn, ", " Dorian Havilliard" };
+//	carte3.setPersonaje(2, vector);
+//	carte3.afisareCarte();
+//
+//	cout << getSirPersonaje(carte1) << endl;
+//	cout << getNrPersonaje(carte2) << endl;
+//
+//	//task03
+//
+//	//Carte carte5 = carte4;
+//
+//
+//	cout << endl << endl;
+//	///carte5 = carte4;
+//
+//	cout << carte1 << endl << carte2;
+//
+//
+//	Carte carte5 = carte1 + carte2;
+//
+//	cout << carte5;
+//
+//	/*Carte carte6;
+//	cin >> carte6;
+//	cout << carte6;*/
+//
+//	//task04
+//
+//	const int numar_obiecteC = 2;
+//	std::vector<Carte> vectorCarte(numar_obiecteC);
+//
+//	for (int i = 0; i < numar_obiecteC; ++i) 
+//	{
+//		cout << "Introduceti datele pentru obiectul Carte la pozitia " << i << ":\n";
+//		cin >> vectorCarte[i];
+//	}
+//	cout << endl << endl;
+//	for (int i = 0; i < numar_obiecteC; ++i) 
+//	{
+//		cout << "Afisare obiect Carte la pozitia " << i << ":\n";
+//		cout << vectorCarte[i];
+//	}
+//
+//	const int numar_linii = 2;
+//	const int numar_coloane = 2;
+//
+//	Carte matriceCarte[numar_linii][numar_coloane];
+//
+//	for (int i = 0; i < numar_linii; ++i) 
+//	{
+//		for (int j = 0; j < numar_coloane; ++j) 
+//		{
+//			cout << "Introduceti datele pentru obiectul Carte la pozitia [" << i << "][" << j << "]:\n";
+//			cin >> matriceCarte[i][j];
+//			cout << endl;
+//		}
+//	}
+//
+//	for (int i = 0; i < numar_linii; ++i) 
+//	{
+//		for (int j = 0; j < numar_coloane; ++j) 
+//		{
+//			cout << "Afisare obiect Carte la pozitia [" << i << "][" << j << "]:\n";
+//			cout << matriceCarte[i][j];
+//		}
+//	}
+//
+//
+//	//task01
+//
+//	Album album1;
+//	album1.adaugarePiese("Karma");
+//	album1.afisareAlbum();
+//
+//	Album album2("Death of an Optimist", "Grandson");
+//	album2.adaugarePiese("Bury with my face down");
+//	album2.afisareAlbum();
+//
+//	string* titluPiese = new string[2];
+//	titluPiese[0] = "Bones";
+//	titluPiese[1] = "Lonely";
+//	Album album3("Mercury", "Imagine Dragons", 2, titluPiese);
+//	album3.adaugarePiese("Sharks");
+//	album3.afisareAlbum();
+//
+//	//task02
+//
+//	Album album4 = album2;
+//	album4.afisareAlbum();
+//
+//	cout << Album::getnrAlbum() << endl;
+//
+//	cout << album1.getAnAlbum() << endl;
+//
+//	cout << album1.getNumeAlbum() << endl;
+//	album1.setNumeAlbum("Reputation");
+//	cout << album1.getNumeAlbum() << endl;
+//
+//	cout << album2.getArtist() << endl;
+//	album2.setArtist("Eminem");
+//	cout << album2.getArtist() << endl;
+//
+//	cout << album3.getNrPiese() << endl;
+//	album3.setNrPiese(2);
+//	cout << album3.getNrPiese() << endl;
+//
+//	cout << album3.getTitluPiese()[2] << endl;
+//	string* vector1 = new string[2]{ "Demons, ", " Life" };
+//	album3.setTitluPiese(2, vector1);
+//	album3.afisareAlbum();
+//
+//	cout << getSirNumePiese(album1) << endl;
+//
+//	cout << getNrPiese1(album2) << endl;
+//
+//	//task03
+//	Album album5;
+//	album5 = album3;
+//
+//	//task04
+//	cout << album4;
+//
+//	const int numar_obiecteA = 2;
+//	std::vector<Album> vectorAlbum(numar_obiecteC);
+//
+//	for (int i = 0; i < numar_obiecteA; ++i) 
+//	{
+//		cout << "Introduceti datele pentru obiectul Album la pozitia " << i << ":\n";
+//		cin >> vectorAlbum[i];
+//	}
+//	cout << endl << endl;
+//	for (int i = 0; i < numar_obiecteA; ++i)
+//	{
+//		cout << "Afisare obiect Album la pozitia " << i << ":\n";
+//		cout << vectorAlbum[i];
+//	}
+//
+//	const int numar_linii1 = 2;
+//	const int numar_coloane1 = 2;
+//
+//	Album matriceAlbum[numar_linii1][numar_coloane1];
+//
+//	for (int i = 0; i < numar_linii1; ++i) 
+//	{
+//		for (int j = 0; j < numar_coloane1; ++j) 
+//		{
+//			cout << "Introduceti datele pentru obiectul Album la pozitia [" << i << "][" << j << "]:\n";
+//			cin >> matriceAlbum[i][j];
+//			cout << endl;
+//		}
+//	}
+//
+//	for (int i = 0; i < numar_linii1; ++i) 
+//	{
+//		for (int j = 0; j < numar_coloane1; ++j) 
+//		{
+//			cout << "Afisare obiect Album la pozitia [" << i << "][" << j << "]:\n";
+//			cout << matriceAlbum[i][j];
+//		}
+//	}
+//
+//
+//	//task01
+//
+//	Tablou tablou1;
+//	tablou1.adaugareLucrare("Dimineata");
+//	tablou1.afisareTablou();
+//
+//	Tablou tablou2("Viziune", "Sebastian Stan");
+//	tablou2.adaugareLucrare("Intuneric");
+//	tablou2.afisareTablou();
+//
+//	string* numeLucrari = new string[2];
+//	numeLucrari[0] = "In afara";
+//	numeLucrari[1] = "Exclus";
+//	Tablou tablou3("Reluare", "Andrei Petrescu", 2, numeLucrari);
+//	tablou3.adaugareLucrare("Trecut");
+//	tablou3.afisareTablou();
+//
+//	//task02
+//
+//	Tablou tablou4 = tablou3;
+//	tablou4.afisareTablou();
+//
+//	cout << Tablou::getnrTablou() << endl;
+//
+//	cout << tablou1.getSerie() << endl;
+//
+//	cout << tablou1.getDenumire() << endl;
+//	tablou1.setDenumire("Apus de Soare");
+//	cout << tablou1.getDenumire() << endl;
+//
+//	cout << tablou2.getPictor() << endl;
+//	tablou2.setPictor("Mihai Anghel");
+//	cout << tablou2.getPictor() << endl;
+//
+//	cout << tablou3.getNrLucrari() << endl;
+//	tablou3.setNrLucrari(3);
+//	cout << tablou3.getNrLucrari() << endl;
+//
+//	cout << tablou1.getNumeLucrari()[0] << endl;
+//	string* vector2 = new string[1]{ " Demoni " };
+//	tablou1.setNumeLucrari(1, vector2);
+//	tablou1.afisareTablou();
+//
+//	cout << getSirNumeLucrari(tablou1) << endl;
+//
+//	cout << getNrLucrari1(tablou2) << endl;
+//
+//	//task03
+//
+//	Tablou tablou5;
+//	tablou5 = tablou2;
+//
+//	//task04
+//
+//	cout << tablou5;
+//
+//	const int numar_obiecteT = 2;
+//	std::vector <Tablou> vectorTablou(numar_obiecteC);
+//
+//	for (int i = 0; i < numar_obiecteT; ++i) 
+//	{
+//		cout << "Introduceti datele pentru obiectul Tablou la pozitia " << i << ":\n";
+//		cin >> vectorTablou[i];
+//	}
+//	cout << endl << endl;
+//	for (int i = 0; i < numar_obiecteT; ++i) 
+//	{
+//		cout << "Afisare obiect Tablou la pozitia " << i << ":\n";
+//		cout << vectorTablou[i];
+//	}
+//
+//	const int numar_linii2 = 2;
+//	const int numar_coloane2 = 2;
+//
+//	Tablou matriceTablou[numar_linii2][numar_coloane2];
+//
+//	for (int i = 0; i < numar_linii2; ++i) 
+//	{
+//		for (int j = 0; j < numar_coloane2; ++j) 
+//		{
+//			cout << "Introduceti datele pentru obiectul Tablou la pozitia [" << i << "][" << j << "]:\n";
+//			cin >> matriceTablou[i][j];
+//			cout << endl;
+//		}
+//	}
+//
+//	for (int i = 0; i < numar_linii2; ++i) 
+//	{
+//		for (int j = 0; j < numar_coloane2; ++j) 
+//		{
+//			cout << "Afisare obiect Tablou la pozitia [" << i << "][" << j << "]:\n";
+//			cout << matriceTablou[i][j];
+//		}
+//	}
+//}
+
 void main()
 {
-	//task01
-
-	Carte carte1;
-	carte1.adaugarePersonaj("Aelin Ashryver.");
-	carte1.afisareCarte();
-
-	Carte carte2("Red Rising", 60);
-	carte2.adaugarePersonaj("Darrow O'Lykos.");
-	carte2.afisareCarte();
-
+	Carte c1;
+	cin >> c1;
 	string* numePersonaje = new string[3];
-	numePersonaje[0] = "Pippa Fitz-Amobi, ";
-	numePersonaje[1] = "Ravi Singh, ";
-	numePersonaje[2] = "Andie Bell. ";
-	Carte carte3("A Good Girl's Guide to Murder", 57.6, false, 3, numePersonaje);
-	carte3.afisareCarte();
-
-	//task02
-
-	Carte carte4 = carte1;
-	carte4.afisareCarte();
-
-	cout << carte1.getNrVolme() << endl;
-
-	cout << carte1.getEditie() << endl;
-
-	cout << carte3.getTitlu() << endl;
-	carte3.setTitlu("Hunger Games");
-	cout << carte3.getTitlu() << endl;
-
-	cout << carte2.getPret() << endl;
-	carte2.setPret(34.5);
-	cout << carte2.getPret() << endl;
-
-	cout << carte1.getBestseller() << endl;
-	carte1.setBestseller(false);
-	cout << carte1.getBestseller() << endl;
-
-	cout << carte2.getnrPersonaje() << endl;
-	//carte2.setNrPersonaje(3);
-	cout << carte2.getnrPersonaje() << endl;
-
-	cout << carte3.getNumePersonaje()[1] << endl;
-	string* vector = new string[2]{ "Rowan Whitethorn, ", " Dorian Havilliard" };
-	carte3.setPersonaje(2, vector);
-	carte3.afisareCarte();
-
-	cout << getSirPersonaje(carte1) << endl;
-	cout << getNrPersonaje(carte2) << endl;
-
-	//task03
-
-	//Carte carte5 = carte4;
-
-
-	cout << endl << endl;
-	///carte5 = carte4;
-
-	cout << carte1 << endl << carte2;
-
-
-	Carte carte5 = carte1 + carte2;
-
-	cout << carte5;
-
-	/*Carte carte6;
-	cin >> carte6;
-	cout << carte6;*/
-
-	//task04
-
-	const int numar_obiecteC = 2;
-	std::vector<Carte> vectorCarte(numar_obiecteC);
-
-	for (int i = 0; i < numar_obiecteC; ++i) 
-	{
-		cout << "Introduceti datele pentru obiectul Carte la pozitia " << i << ":\n";
-		cin >> vectorCarte[i];
-	}
-	cout << endl << endl;
-	for (int i = 0; i < numar_obiecteC; ++i) 
-	{
-		cout << "Afisare obiect Carte la pozitia " << i << ":\n";
-		cout << vectorCarte[i];
-	}
-
-	const int numar_linii = 2;
-	const int numar_coloane = 2;
-
-	Carte matriceCarte[numar_linii][numar_coloane];
-
-	for (int i = 0; i < numar_linii; ++i) 
-	{
-		for (int j = 0; j < numar_coloane; ++j) 
-		{
-			cout << "Introduceti datele pentru obiectul Carte la pozitia [" << i << "][" << j << "]:\n";
-			cin >> matriceCarte[i][j];
-			cout << endl;
-		}
-	}
-
-	for (int i = 0; i < numar_linii; ++i) 
-	{
-		for (int j = 0; j < numar_coloane; ++j) 
-		{
-			cout << "Afisare obiect Carte la pozitia [" << i << "][" << j << "]:\n";
-			cout << matriceCarte[i][j];
-		}
-	}
-
-
-	//task01
-
-	Album album1;
-	album1.adaugarePiese("Karma");
-	album1.afisareAlbum();
-
-	Album album2("Death of an Optimist", "Grandson");
-	album2.adaugarePiese("Bury with my face down");
-	album2.afisareAlbum();
-
-	string* titluPiese = new string[2];
-	titluPiese[0] = "Bones";
-	titluPiese[1] = "Lonely";
-	Album album3("Mercury", "Imagine Dragons", 2, titluPiese);
-	album3.adaugarePiese("Sharks");
-	album3.afisareAlbum();
-
-	//task02
-
-	Album album4 = album2;
-	album4.afisareAlbum();
-
-	cout << Album::getnrAlbum() << endl;
-
-	cout << album1.getAnAlbum() << endl;
-
-	cout << album1.getNumeAlbum() << endl;
-	album1.setNumeAlbum("Reputation");
-	cout << album1.getNumeAlbum() << endl;
-
-	cout << album2.getArtist() << endl;
-	album2.setArtist("Eminem");
-	cout << album2.getArtist() << endl;
-
-	cout << album3.getNrPiese() << endl;
-	album3.setNrPiese(2);
-	cout << album3.getNrPiese() << endl;
-
-	cout << album3.getTitluPiese()[2] << endl;
-	string* vector1 = new string[2]{ "Demons, ", " Life" };
-	album3.setTitluPiese(2, vector1);
-	album3.afisareAlbum();
-
-	cout << getSirNumePiese(album1) << endl;
-
-	cout << getNrPiese1(album2) << endl;
-
-	//task03
-	Album album5;
-	album5 = album3;
-
-	//task04
-	cout << album4;
-
-	const int numar_obiecteA = 2;
-	std::vector<Album> vectorAlbum(numar_obiecteC);
-
-	for (int i = 0; i < numar_obiecteA; ++i) 
-	{
-		cout << "Introduceti datele pentru obiectul Album la pozitia " << i << ":\n";
-		cin >> vectorAlbum[i];
-	}
-	cout << endl << endl;
-	for (int i = 0; i < numar_obiecteA; ++i)
-	{
-		cout << "Afisare obiect Album la pozitia " << i << ":\n";
-		cout << vectorAlbum[i];
-	}
-
-	const int numar_linii1 = 2;
-	const int numar_coloane1 = 2;
-
-	Album matriceAlbum[numar_linii1][numar_coloane1];
-
-	for (int i = 0; i < numar_linii1; ++i) 
-	{
-		for (int j = 0; j < numar_coloane1; ++j) 
-		{
-			cout << "Introduceti datele pentru obiectul Album la pozitia [" << i << "][" << j << "]:\n";
-			cin >> matriceAlbum[i][j];
-			cout << endl;
-		}
-	}
-
-	for (int i = 0; i < numar_linii1; ++i) 
-	{
-		for (int j = 0; j < numar_coloane1; ++j) 
-		{
-			cout << "Afisare obiect Album la pozitia [" << i << "][" << j << "]:\n";
-			cout << matriceAlbum[i][j];
-		}
-	}
-
-
-	//task01
-
-	Tablou tablou1;
-	tablou1.adaugareLucrare("Dimineata");
-	tablou1.afisareTablou();
-
-	Tablou tablou2("Viziune", "Sebastian Stan");
-	tablou2.adaugareLucrare("Intuneric");
-	tablou2.afisareTablou();
-
-	string* numeLucrari = new string[2];
-	numeLucrari[0] = "In afara";
-	numeLucrari[1] = "Exclus";
-	Tablou tablou3("Reluare", "Andrei Petrescu", 2, numeLucrari);
-	tablou3.adaugareLucrare("Trecut");
-	tablou3.afisareTablou();
-
-	//task02
-
-	Tablou tablou4 = tablou3;
-	tablou4.afisareTablou();
-
-	cout << Tablou::getnrTablou() << endl;
-
-	cout << tablou1.getSerie() << endl;
-
-	cout << tablou1.getDenumire() << endl;
-	tablou1.setDenumire("Apus de Soare");
-	cout << tablou1.getDenumire() << endl;
-
-	cout << tablou2.getPictor() << endl;
-	tablou2.setPictor("Mihai Anghel");
-	cout << tablou2.getPictor() << endl;
-
-	cout << tablou3.getNrLucrari() << endl;
-	tablou3.setNrLucrari(3);
-	cout << tablou3.getNrLucrari() << endl;
-
-	cout << tablou1.getNumeLucrari()[0] << endl;
-	string* vector2 = new string[1]{ " Demoni " };
-	tablou1.setNumeLucrari(1, vector2);
-	tablou1.afisareTablou();
-
-	cout << getSirNumeLucrari(tablou1) << endl;
-
-	cout << getNrLucrari1(tablou2) << endl;
-
-	//task03
-
-	Tablou tablou5;
-	tablou5 = tablou2;
-
-	//task04
-
-	cout << tablou5;
-
-	const int numar_obiecteT = 2;
-	std::vector <Tablou> vectorTablou(numar_obiecteC);
-
-	for (int i = 0; i < numar_obiecteT; ++i) 
-	{
-		cout << "Introduceti datele pentru obiectul Tablou la pozitia " << i << ":\n";
-		cin >> vectorTablou[i];
-	}
-	cout << endl << endl;
-	for (int i = 0; i < numar_obiecteT; ++i) 
-	{
-		cout << "Afisare obiect Tablou la pozitia " << i << ":\n";
-		cout << vectorTablou[i];
-	}
-
-	const int numar_linii2 = 2;
-	const int numar_coloane2 = 2;
-
-	Tablou matriceTablou[numar_linii2][numar_coloane2];
-
-	for (int i = 0; i < numar_linii2; ++i) 
-	{
-		for (int j = 0; j < numar_coloane2; ++j) 
-		{
-			cout << "Introduceti datele pentru obiectul Tablou la pozitia [" << i << "][" << j << "]:\n";
-			cin >> matriceTablou[i][j];
-			cout << endl;
-		}
-	}
-
-	for (int i = 0; i < numar_linii2; ++i) 
-	{
-		for (int j = 0; j < numar_coloane2; ++j) 
-		{
-			cout << "Afisare obiect Tablou la pozitia [" << i << "][" << j << "]:\n";
-			cout << matriceTablou[i][j];
-		}
-	}
+	numePersonaje[0] = " ";
+	numePersonaje[1] = " ";
+	numePersonaje[2] = " ";
+	Carte c2("The_Maze_Runner", 58.9, 1, 3, numePersonaje);
+	ofstream afisare("carte.txt", ios::out);
+	afisare << c2;
+	afisare.close();
+
+	ifstream citire("carte.txt", ios::in);
+	citire >> c2;
+	cout << c2;
+	citire.close();
+
+	char sir[100] = "text salvat in fisier binar";
+
+	float pret = 50.7;
+	fstream f("carte.bin", ios::out | ios::binary);
+
+	f.write((char*)&pret, sizeof(float));
+	int lungime = strlen(sir) + 1;
+	f.write((char*)&lungime, sizeof(int));
+	f.write((char*)sir, lungime);
+	f.close();
+
+	fstream g("carte.bin", ios::binary | ios::in);
+
+	float pretCitit;
+	char* pSir;
+	int lungimeCitita;
+
+	g.read((char*)&pretCitit, sizeof(float));
+
+	g.read((char*)&pretCitit, sizeof(float));
+	g.read((char*)&lungimeCitita, sizeof(int));
+	pSir = new char[lungimeCitita];
+	g.read((char*)pSir, lungimeCitita);
+	g.close();
+	cout << pretCitit << " " << pSir;
+	delete[]pSir;
 }
