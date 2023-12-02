@@ -414,6 +414,144 @@ public:
 	}
 };
 
+//THG=The Hunger Games
+class THG:public Carte
+{
+private:
+	char* tipCoperta;
+	int nrPagini;
+public:
+	THG() :Carte()
+	{
+		this->tipCoperta = new char[strlen("Hardcover") + 1];
+		strcpy_s(this->tipCoperta, strlen("Hardcover") + 1, "Hardcover");
+		this->nrPagini = 321;
+	}
+
+	THG(string titlu, float pret, const char* tipCoperta, int nrPagini) :Carte("THG",pret)
+	{
+		this->tipCoperta = new char[strlen(tipCoperta) + 1];
+		strcpy_s(this->tipCoperta, strlen(tipCoperta) + 1, tipCoperta);
+		this->nrPagini = nrPagini;
+	}
+
+	THG(string titlu, float pret, bool bestseller, int nrPersonaje, string* numePersonaje, const char* tipCoperta, int nrPagini) :Carte(titlu, pret, bestseller, nrPersonaje, numePersonaje)
+	{
+		this->tipCoperta = new char[strlen(tipCoperta) + 1];
+		strcpy_s(this->tipCoperta, strlen(tipCoperta) + 1, tipCoperta);
+		this->nrPagini = nrPagini;
+	}
+
+	THG(const THG &c) :Carte(c)
+	{
+		this->tipCoperta = new char[strlen(c.tipCoperta) + 1];
+		strcpy_s(this->tipCoperta, strlen(c.tipCoperta) + 1, c.tipCoperta);
+		this->nrPagini = c.nrPagini;
+	}
+
+	THG operator=(const THG& c)
+	{
+		if (this != &c)
+		{
+			(Carte)*this = (Carte)c;
+			if (this->tipCoperta)
+			{
+				delete[]this->tipCoperta;
+			}
+			this->tipCoperta = new char[strlen(c.tipCoperta) + 1];
+			strcpy_s(this->tipCoperta, strlen(c.tipCoperta) + 1, c.tipCoperta);
+			this->nrPagini = c.nrPagini;
+		}
+		return *this;
+	}
+
+	friend ostream& operator<<(ostream& ecran, const THG& c)
+	{
+		ecran << (Carte)c;
+		ecran << endl << "Tipul copertii: " << c.tipCoperta << endl;
+		ecran << "Numarul de pagini: " << c.nrPagini << endl;
+		return ecran;
+	}
+
+	~THG()
+	{
+		if (this->tipCoperta)
+		{
+			delete[]this->tipCoperta;
+		}
+	}
+
+};
+
+//TMR=The Maze Runner
+class TMR :public Carte
+{
+private:
+	char* editura;
+	int anAparitie;
+public:
+	TMR() :Carte()
+	{
+		this->editura = new char[strlen("Nemira") + 1];
+		strcpy_s(this->editura, strlen("Nemira") + 1, "Nemira");
+		this->anAparitie = 321;
+	}
+
+	TMR(string titlu, float pret, const char* editura, int anAparitie) :Carte("TMR", pret)
+	{
+		this->editura = new char[strlen(editura) + 1];
+		strcpy_s(this->editura, strlen(editura) + 1, editura);
+		this->anAparitie = anAparitie;
+	}
+
+	TMR(string titlu, float pret, bool bestseller, int nrPersonaje, string* numePersonaje, const char* editura, int anAparitie) :Carte(titlu, pret, bestseller, nrPersonaje, numePersonaje)
+	{
+		this->editura = new char[strlen(editura) + 1];
+		strcpy_s(this->editura, strlen(editura) + 1, editura);
+		this->anAparitie = anAparitie;
+	}
+
+	TMR(const TMR& c) :Carte(c)
+	{
+		this->editura = new char[strlen(c.editura) + 1];
+		strcpy_s(this->editura, strlen(c.editura) + 1, c.editura);
+		this->anAparitie = c.anAparitie;
+	}
+
+	TMR operator=(const TMR& c)
+	{
+		if (this != &c)
+		{
+			(Carte)*this = (Carte)c;
+			if (this->editura)
+			{
+				delete[]this->editura;
+			}
+			this->editura = new char[strlen(c.editura) + 1];
+			strcpy_s(this->editura, strlen(c.editura) + 1, c.editura);
+			this->anAparitie = c.anAparitie;
+		}
+		return *this;
+	}
+
+	friend ostream& operator<<(ostream& ecran, const TMR& c)
+	{
+		ecran << (Carte)c;
+		ecran << endl << "Editura: " << c.editura << endl;
+		ecran << "Anul aparitiei: " << c.anAparitie << endl;
+		return ecran;
+	}
+
+	~TMR()
+	{
+		if (this->editura)
+		{
+			delete[]this->editura;
+		}
+	}
+
+};
+
 
 
 class Album {
@@ -1261,92 +1399,126 @@ int getNrLucrari1(const Tablou& t)
 //	}
 //}
 
+//void main()
+//{
+//	//Carte c1;
+//	//cin >> c1;
+//	//string* numePersonaje = new string[3];
+//	//numePersonaje[0] = " Thersa ";
+//	//numePersonaje[1] = " Thomas ";
+//	//numePersonaje[2] = " Newt ";
+//	//Carte c2("The_Maze_Runner", 58.9, 1, 3, numePersonaje);
+//	//ofstream afisare("carte.txt", ios::out);
+//	//afisare << c2;
+//	//afisare.close();
+//
+//	//ifstream citire("carte.txt", ios::in);
+//	//citire >> c2;
+//	//cout << c2;
+//	//citire.close();
+//
+//	//char sir[100] = "text salvat in fisier binar";
+//
+//	//float pret = 50.7;
+//	//fstream f("carte.bin", ios::out | ios::binary);
+//
+//	//f.write((char*)&pret, sizeof(float));
+//	//int lungime = strlen(sir) + 1;
+//	//f.write((char*)&lungime, sizeof(int));
+//	//f.write((char*)sir, lungime);
+//	//f.close();
+//
+//	//fstream g("carte.bin", ios::binary | ios::in);
+//
+//	//float pretCitit;
+//	//char* pSir;
+//	//int lungimeCitita;
+//
+//	//g.read((char*)&pretCitit, sizeof(float));
+//
+//	//g.read((char*)&pretCitit, sizeof(float));
+//	//g.read((char*)&lungimeCitita, sizeof(int));
+//	//pSir = new char[lungimeCitita];
+//	//g.read((char*)pSir, lungimeCitita);
+//	//g.close();
+//	//cout << pretCitit << " " << pSir;
+//	//delete[]pSir;
+//
+//
+//
+//	Album a1;
+//	cin >> a1;
+//	string* titluPiese = new string[2];
+//	titluPiese[0] = "Daylight";
+//	titluPiese[1] = "Kids";
+//	Album a2("Power", "Isak", 2, titluPiese);
+//	ofstream afisare1("album.txt", ios::out);
+//	afisare1 << a2;
+//	afisare1.close();
+//
+//	ifstream citire1("album.txt", ios::in);
+//	citire1 >> a2;
+//	cout << a2;
+//	citire1.close();
+//
+//	char sir1[100] = "text salvat in fisier binar";
+//
+//	float pret1 = 70.8;
+//	fstream f("album.bin", ios::out | ios::binary);
+//
+//	f.write((char*)&pret1, sizeof(float));
+//	int lungime1 = strlen(sir1) + 1;
+//	f.write((char*)&lungime1, sizeof(int));
+//	f.write((char*)sir1, lungime1);
+//	f.close();
+//
+//	fstream g("album.bin", ios::binary | ios::in);
+//
+//	float pretCitit1;
+//	char* pSir1;
+//	int lungimeCitita1;
+//
+//	g.read((char*)&pretCitit1, sizeof(float));
+//
+//	g.read((char*)&pretCitit1, sizeof(float));
+//	g.read((char*)&lungimeCitita1, sizeof(int));
+//	pSir1 = new char[lungimeCitita1];
+//	g.read((char*)pSir1, lungimeCitita1);
+//	g.close();
+//	cout << pretCitit1 << " " << pSir1;
+//	delete[]pSir1;
+//} 
+
 void main()
 {
-	//Carte c1;
-	//cin >> c1;
-	//string* numePersonaje = new string[3];
-	//numePersonaje[0] = " Thersa ";
-	//numePersonaje[1] = " Thomas ";
-	//numePersonaje[2] = " Newt ";
-	//Carte c2("The_Maze_Runner", 58.9, 1, 3, numePersonaje);
-	//ofstream afisare("carte.txt", ios::out);
-	//afisare << c2;
-	//afisare.close();
+	THG thg;
+	cout << thg.getnrPersonaje();
 
-	//ifstream citire("carte.txt", ios::in);
-	//citire >> c2;
-	//cout << c2;
-	//citire.close();
+	Carte c;
+	cout << c.getnrPersonaje();
 
-	//char sir[100] = "text salvat in fisier binar";
+	THG c1("THG", 70.9, "Hardcover", 321);
+	THG thg1 = c1;
+	THG thg2;
+	thg2 = c1;
 
-	//float pret = 50.7;
-	//fstream f("carte.bin", ios::out | ios::binary);
+	cout << thg2;
+	
+	Autor a;
 
-	//f.write((char*)&pret, sizeof(float));
-	//int lungime = strlen(sir) + 1;
-	//f.write((char*)&lungime, sizeof(int));
-	//f.write((char*)sir, lungime);
-	//f.close();
+	
 
-	//fstream g("carte.bin", ios::binary | ios::in);
+	TMR tmr;
+	cout << tmr.getnrPersonaje();
 
-	//float pretCitit;
-	//char* pSir;
-	//int lungimeCitita;
+	Carte ca1;
+	cout << ca1.getnrPersonaje();
 
-	//g.read((char*)&pretCitit, sizeof(float));
+	TMR ca2("TMR", 68.7, "Nemira", 2012);
+	TMR tmr1 = ca2;
+	TMR tmr2;
+	tmr2 = ca2;
 
-	//g.read((char*)&pretCitit, sizeof(float));
-	//g.read((char*)&lungimeCitita, sizeof(int));
-	//pSir = new char[lungimeCitita];
-	//g.read((char*)pSir, lungimeCitita);
-	//g.close();
-	//cout << pretCitit << " " << pSir;
-	//delete[]pSir;
+	cout << tmr2;
 
-
-
-	Album a1;
-	cin >> a1;
-	string* titluPiese = new string[2];
-	titluPiese[0] = "Daylight";
-	titluPiese[1] = "Kids";
-	Album a2("Power", "Isak", 2, titluPiese);
-	ofstream afisare1("album.txt", ios::out);
-	afisare1 << a2;
-	afisare1.close();
-
-	ifstream citire1("album.txt", ios::in);
-	citire1 >> a2;
-	cout << a2;
-	citire1.close();
-
-	char sir1[100] = "text salvat in fisier binar";
-
-	float pret1 = 70.8;
-	fstream f("album.bin", ios::out | ios::binary);
-
-	f.write((char*)&pret1, sizeof(float));
-	int lungime1 = strlen(sir1) + 1;
-	f.write((char*)&lungime1, sizeof(int));
-	f.write((char*)sir1, lungime1);
-	f.close();
-
-	fstream g("album.bin", ios::binary | ios::in);
-
-	float pretCitit1;
-	char* pSir1;
-	int lungimeCitita1;
-
-	g.read((char*)&pretCitit1, sizeof(float));
-
-	g.read((char*)&pretCitit1, sizeof(float));
-	g.read((char*)&lungimeCitita1, sizeof(int));
-	pSir1 = new char[lungimeCitita1];
-	g.read((char*)pSir1, lungimeCitita1);
-	g.close();
-	cout << pretCitit1 << " " << pSir1;
-	delete[]pSir1;
-} 
+}
