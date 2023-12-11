@@ -3,8 +3,34 @@
 #include <fstream>
 using namespace std;
 
+class Serie
+{
+private:
+	string nume;
+public:
+	virtual void descriereSerie() = 0;
 
-class Carte {
+	Serie()
+	{
+		this->nume = "A Song of Ice and Fire ";
+	}
+
+	string getNume()
+	{
+		return this->nume;
+	}
+
+	void setNume(string nume)
+	{
+		if (nume.length() > 3)
+		{
+			this->nume = nume;
+		}
+	}
+
+};
+
+class Carte:public Serie {
 private:
 	static int nrVolume;
 	const int editie;
@@ -20,7 +46,14 @@ public:
 		return nrVolume;
 	}
 
-	Carte() : editie(nrVolume++) {
+	void descriereSerie()
+		{
+			cout << "Cartea " << this->titlu << " are " << nrPersonaje << " personaje."<<endl;
+		}
+	
+
+	Carte() :Serie(), editie(nrVolume++)
+	{
 		this->titlu = "Throne of Glass";
 		this->pret = 50.7;
 		this->bestseller = true;
@@ -28,7 +61,7 @@ public:
 		this->numePersonaje = NULL;
 	}
 
-	Carte(string titlu, float pret) :editie(nrVolume)
+	Carte(string titlu, float pret) :Serie(), editie(nrVolume)
 	{
 		nrVolume++;
 		this->titlu = titlu;
@@ -38,7 +71,7 @@ public:
 		this->numePersonaje = NULL;
 	}
 
-	Carte(string titlu, float pret, bool bestseller, int nrPersonaje, string* numePersonaje) : editie(nrVolume)
+	Carte(string titlu, float pret, bool bestseller, int nrPersonaje, string* numePersonaje) :Serie(), editie(nrVolume)
 	{
 		nrVolume++;
 		this->titlu = titlu;
@@ -52,7 +85,7 @@ public:
 		}
 	}
 
-	Carte(const Carte& carte1) :editie(nrVolume++)
+	Carte(const Carte& carte1) :Serie(), editie(nrVolume++)
 	{
 		this->titlu = carte1.titlu;
 		this->pret = carte1.pret;
@@ -317,7 +350,7 @@ int getNrPersonaje(const Carte& c)
 	return c.nrPersonaje;
 }
 
-class Autor
+class Autor:public Serie
 {
 private:
 	string numeAutor;
@@ -325,20 +358,25 @@ private:
 	Carte carte;
 public:
 
-	Autor()
+	void descriereSerie()
+		{
+			cout << "Autorul " << this->numeAutor << " este in varsta de " << varsta << " ani."<<endl;
+		}
+
+	Autor():Serie()
 	{
 		this->numeAutor = "Sarah J. Mass";
 		this->varsta = 40;
 	}
 
-	Autor(string numeAutor, int varsta, Carte& carte)
+	Autor(string numeAutor, int varsta, Carte& carte) :Serie()
 	{
 		this->numeAutor = numeAutor;
 		this->varsta = varsta;
 		this->carte = carte;
 	}
 
-	Autor(Carte& carte)
+	Autor(Carte& carte) :Serie()
 	{
 		this->numeAutor = "Sarah J. Mass";
 		this->varsta = 40;
@@ -552,9 +590,59 @@ public:
 
 };
 
+class Editura
+{
+private:
+	int nrSerii;
+	Serie** serii;
+public:
+	Editura()
+	{
+		this->nrSerii = 10;
+		this->serii = new Serie * [10];
+		for (int i = 0; i < 10; i++)
+		{
+			this->serii[i] = new Carte;
+		}
+	}
+
+	Serie*& operator[](int i)
+	{
+		if (i >= 0 && this->nrSerii)
+			return this->serii[i];
+	}
+};
 
 
-class Album {
+class CasaDiscuri
+{
+private:
+	string numeCD;
+public:
+	virtual void descriereCasaDiscuri() = 0;
+
+	CasaDiscuri()
+	{
+		this->numeCD = "HaHaHa Production";
+	}
+
+	string getNumeCD()
+	{
+		return this->numeCD;
+	}
+
+	void setNumeCD(string numeCD)
+	{
+		if (numeCD.length() > 3)
+		{
+			this->numeCD = numeCD;
+		}
+	}
+
+};
+
+
+class Album: public CasaDiscuri {
 private:
 	static int nrAlbum;
 	const int anAlbum;
@@ -568,7 +656,12 @@ public:
 		return nrAlbum;
 	}
 
-	Album() :anAlbum(nrAlbum++)
+	void descriereCasaDiscuri()
+	{
+		cout << "Albumul " << this->numeAlbum << " contine " << nrPiese << " melodii.";
+	}
+
+	Album() :CasaDiscuri(), anAlbum(nrAlbum++)
 	{
 		this->numeAlbum = "Midnights";
 		this->artist = "Taylor Swift";
@@ -576,7 +669,7 @@ public:
 		this->titluPiese = NULL;
 	}
 
-	Album(string numeAlbum, string artist) : anAlbum(nrAlbum)
+	Album(string numeAlbum, string artist) : CasaDiscuri(), anAlbum(nrAlbum)
 	{
 		nrAlbum++;
 		this->numeAlbum = numeAlbum;
@@ -585,7 +678,7 @@ public:
 		this->titluPiese = NULL;
 	}
 
-	Album(string numeAlbum, string artist, int nrPiese, string* titluPiese) : anAlbum(nrAlbum)
+	Album(string numeAlbum, string artist, int nrPiese, string* titluPiese) :CasaDiscuri(), anAlbum(nrAlbum)
 	{
 		nrAlbum++;
 		this->numeAlbum = numeAlbum;
@@ -598,7 +691,7 @@ public:
 		}
 	}
 
-	Album(const Album& album2) : anAlbum(nrAlbum++)
+	Album(const Album& album2) : CasaDiscuri(), anAlbum(nrAlbum++)
 	{
 		this->numeAlbum = album2.numeAlbum;
 		this->artist = album2.artist;
@@ -1489,36 +1582,62 @@ int getNrLucrari1(const Tablou& t)
 //	delete[]pSir1;
 //} 
 
+//void main()
+//{
+//	THG thg;
+//	cout << thg.getnrPersonaje();
+//
+//	Carte c;
+//	cout << c.getnrPersonaje();
+//
+//	THG c1("THG", 70.9, "Hardcover", 321);
+//	THG thg1 = c1;
+//	THG thg2;
+//	thg2 = c1;
+//
+//	cout << thg2;
+//	
+//	Autor a;
+//
+//	
+//
+//	TMR tmr;
+//	cout << tmr.getnrPersonaje();
+//
+//	Carte ca1;
+//	cout << ca1.getnrPersonaje();
+//
+//	TMR ca2("TMR", 68.7, "Nemira", 2012);
+//	TMR tmr1 = ca2;
+//	TMR tmr2;
+//	tmr2 = ca2;
+//
+//	cout << tmr2;
+//
+//}
+
 void main()
 {
-	THG thg;
-	cout << thg.getnrPersonaje();
+	Carte c1("Divergent", 78);
+	c1.descriereSerie();
 
-	Carte c;
-	cout << c.getnrPersonaje();
+	Serie* s;
+	s = new Carte();
+	s->descriereSerie();
 
-	THG c1("THG", 70.9, "Hardcover", 321);
-	THG thg1 = c1;
-	THG thg2;
-	thg2 = c1;
-
-	cout << thg2;
-	
-	Autor a;
-
-	
-
-	TMR tmr;
-	cout << tmr.getnrPersonaje();
-
-	Carte ca1;
-	cout << ca1.getnrPersonaje();
-
-	TMR ca2("TMR", 68.7, "Nemira", 2012);
-	TMR tmr1 = ca2;
-	TMR tmr2;
-	tmr2 = ca2;
-
-	cout << tmr2;
-
+	Editura e1;
+	e1[0] = new Carte("Ender's Game", 57.8);
+	e1[1] = new Carte("Me Before You", 77.8);
+	e1[2] = new Carte("If I Stay", 34.8);
+	e1[3]= new Carte("Red Queen", 100);
+	e1[4] = new Carte("The Fifth Wave", 45.9);
+	e1[5] = new Carte("Endgame", 65.6);
+	e1[6] = new Carte("Shadow and Bone", 68.9);
+	e1[7] = new Carte("Six of Crows", 57.8);
+	e1[8] = new Carte("The Cruel Prince", 56.4);
+	e1[9] = new Carte("When Breath Becomes Air", 79.8);
+	for (int i = 0; i < 10; i++)
+	{
+		e1[i]->descriereSerie();
+	}
 }
